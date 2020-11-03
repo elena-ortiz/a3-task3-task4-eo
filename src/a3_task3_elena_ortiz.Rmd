@@ -1,0 +1,66 @@
+---
+title: "a3_task3_elena_ortiz"
+author: "Elena Ortiz"
+date: "11/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(kableExtra)
+```
+
+## Red and Purple Sea Urchins - Data Exploration
+
+In this document, I will explore red and purple sea urchin data from the Santa Barbara coast through data visualization and summary statistics.  
+
+```{r}
+urchins <- read.csv(here("data","urchins.csv")) %>% 
+  clean_names()
+```
+
+### Red & purple sea urchin size: exploratory data 
+
+Here I will compare sizes among different sea urchin populations. 
+
+#### Geom_histogram 
+
+```{r}
+ggplot(data = urchins, aes(x = size)) +
+  geom_histogram(bins = 15) +
+  facet_wrap(~common_name) +
+         labs(x = "Diameter (cm)", y = "Urchin count")
+  
+```
+
+#### Geom_boxplot
+
+```{r}
+ggplot(data = urchins, aes(x = common_name, y = size)) +
+  geom_boxplot() +
+  labs(x = "Common Name", y = "Diameter (cm)")
+```
+
+### Red & purple sea urchin size: summary statistics
+
+```{r}
+urchins %>% 
+  group_by(common_name) %>% 
+  summarize(
+    mean_size = mean(size),
+    sd_size = sd(size),
+    med_size = median(size),
+    sample_size = n()) %>% 
+  kbl() %>%
+  kable_minimal()
+  
+```
+
+#### Analysis 
+
+
+
+
