@@ -1,0 +1,83 @@
+---
+title: "a3_task4_elena_ortiz"
+author: "Elena Ortiz"
+date: "11/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+```
+
+## Kelp Removal & Sizes of Purple Urchins in Napels Reef 
+
+Here, I compare the mean sizes of Purple Urchin populations based on kelp removal in the Naples Reef in January 2010. 
+
+### Initial Data Wrangling 
+
+```{r}
+urchins <- read_csv(here("data", "urchins.csv")) %>% 
+  clean_names() 
+
+purple_urchins_NAPL <- urchins %>%
+  mutate(date = mdy(date)) %>%
+  mutate(year_new = year(date)) %>% 
+  mutate(month_new = month(date)) %>%
+  filter(common_name == "Purple Urchin", site == "NAPL", year_new == "2010", month_new == "1")
+```
+
+### Data Exploration 
+
+Using histograms and QQ Plots I will do an initial visual exploration of the data. 
+
+#### Exploratory histgrams: 
+
+```{r}
+ggplot(data = purple_urchins_NAPL, aes(x = size)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~treatment)
+```
+
+Both distributions appear to be normally distributed, with the "control" group depicting less spread than the "annual" group.
+
+#### Quantile-quantile Plot 
+
+```{r}
+ggplot(data = purple_urchins_NAPL, aes(sample = size)) +
+  geom_qq() +
+  facet_wrap(~treatment)
+```
+
+The "control" group somewhat follows a linear trend but overall depicts wider spread seen above. The "annual" group is also generally linear, but shows a wider spread with tails either end. 
+
+### Descriptive Statistics 
+
+```{r}
+kelp_summary <- purple_urchins_NAPL %>% 
+  group_by(treatment) %>% 
+  summarize(mean_diameter = mean(size),
+            sd_diameter = sd(size),
+            sample_size = n())
+
+kelp_summary
+```
+### 2-Sample T-test
+
+```{r}
+annual_sample <- purple_urchins_NAPL %>% 
+  filter(treatment == "ANNUAL") %>% 
+  pull(size)
+
+control_sample <- purple_urchins_NAPL %>% 
+  filter(treatment == "CONTROL") %>% 
+  pull(size)
+
+t.test(x = annual_sample, control_sample)
+```
+The t-test shows that there is reasonable (25%) chance of randomly drawing sample populations with means at least this different if they were from populations with the same mean. This means it is possible that these samples were indeed drawn from populations with the same mean. In looking at the means, they are fairly close with a small percent difference between them.  
+
+### END
