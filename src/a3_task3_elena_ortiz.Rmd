@@ -45,7 +45,7 @@ ggplot(data = urchins, aes(x = common_name, y = size)) +
   labs(x = "Common Name", y = "Diameter (cm)")
 ```
 
-### Red & purple sea urchin size: summary statistics
+### Red & Purple Sea Urchin Size: Summary Statistics
 
 ```{r}
 urchins %>% 
@@ -62,7 +62,7 @@ urchins %>%
 
 #### Analysis 
 
-We see that the means for the Purple and Red Urchin sizes are 4.47 and 6.78 cm respectively. The Purple Urchin population is normally distributed, with a standard deviation of 1.18, so there is smaller spread between samples in this population. On the other hand, the Red Urchin population shows a bimodal distribution with a positive skew, and larger standard deviation (1.89), or spread between samples in this population. 
+We see that the means for the Purple and Red Urchin sizes are 4.47 and 6.78 cm respectively. The Red Urchin population is normally distributed, with a standard deviation of 1.89, so there is larger spread between samples in this population. On the other hand, the Purple Urchin population shows a likely normal distribution with a positive skew, and smaller standard deviation (1.18), or smaller spread between samples in this population. 
 
 ### Purple Sea Urchin: Counts By Site/Year
 
@@ -93,6 +93,8 @@ purple_urchins %>%
   theme_minimal()
   
 ```
+
+Here we see that the populations follow similar growth patterns across the sites over time. Mohawk and Carpinteria Reef depict larger surges in population growth in 2009 and Carpinteria again in 2011. 
 
 ### END
 

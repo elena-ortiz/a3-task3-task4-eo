@@ -52,7 +52,7 @@ ggplot(data = purple_urchins_NAPL, aes(sample = size)) +
   facet_wrap(~treatment)
 ```
 
-The "control" group somewhat follows a linear trend but overall depicts wider spread seen above. The "annual" group is also generally linear, but shows a wider spread with tails either end. 
+The "control" group follows a somewhat linear trend, with a wider spread in the tails. Similarly, the "annual" group is also generally linear, but shows a wider spread in the tails on either end than the "control" group. 
 
 ### Descriptive Statistics 
 
@@ -78,6 +78,8 @@ control_sample <- purple_urchins_NAPL %>%
 
 t.test(x = annual_sample, control_sample)
 ```
-The t-test shows that there is reasonable (25%) chance of randomly drawing sample populations with means at least this different if they were from populations with the same mean. This means it is possible that these samples were indeed drawn from populations with the same mean. In looking at the means, they are fairly close with a small percent difference between them.  
+The t-test shows that there is reasonable (25%) chance of randomly drawing sample populations with means at least this different if they were from populations with the same mean. This means it is possible that these samples were indeed drawn from populations with the same mean. In looking at the means, it is important to consider that they are fairly close with only a difference of approximately .19 between them. Additionally, the sample sizes were sufficiently large (~60), which could also impact this finding. More information is needed to determine the "significance" of this difference. 
+
+The p-value here states that there is a 25% chance of drawing sample populations with means at least this different if they were from populations with the same mean by chance. 
 
 ### END
