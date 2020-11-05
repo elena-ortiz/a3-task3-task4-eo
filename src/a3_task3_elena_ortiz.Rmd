@@ -11,6 +11,7 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(kableExtra)
+library(lubridate)
 ```
 
 ## Red and Purple Sea Urchins - Data Exploration
@@ -22,7 +23,7 @@ urchins <- read.csv(here("data","urchins.csv")) %>%
   clean_names()
 ```
 
-### Red & purple sea urchin size: exploratory data 
+### Red & Purple Sea Urchin Size: Exploratory Data 
 
 Here I will compare sizes among different sea urchin populations. 
 
@@ -61,6 +62,37 @@ urchins %>%
 
 #### Analysis 
 
+We see that the means for the Purple and Red Urchin sizes are 4.47 and 6.78 cm respectively. The Purple Urchin population is normally distributed, with a standard deviation of 1.18, so there is smaller spread between samples in this population. On the other hand, the Red Urchin population shows a bimodal distribution with a positive skew, and larger standard deviation (1.89), or spread between samples in this population. 
 
+### Purple Sea Urchin: Counts By Site/Year
 
+#### Purple Urchin Subset 
+
+```{r}
+purple_urchins <- urchins %>%
+  mutate(date = mdy(date)) %>%
+  mutate(year_new = year(date)) %>% 
+  filter(common_name == "Purple Urchin") %>%
+  mutate(site_full = case_when(
+    site %in% c("NAPL") ~ "Naples Reef",
+    site %in% c("AQUE") ~ "Arroyo Quemado Reef",
+    site %in% c("CARP") ~ "Carpinteria Reef",
+    site %in% c("MOHK") ~ "Mohawk Reef",
+    site %in% c("IVEE") ~ "Isla Vista Reef"))
+```
+
+#### Purple Urchin Summary Stats & Exploratory Graph
+
+```{r}
+purple_urchins %>% 
+  count(site_full, year_new) %>% 
+  ggplot(aes(x = year_new, y = n)) +
+  geom_line(aes(color = site_full)) +
+  labs(title = "Purple Urchin Populations", x = "Year", y = "Count", color = "Site Name") +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018, 2020)) +
+  theme_minimal()
+  
+```
+
+### END
 
